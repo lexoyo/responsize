@@ -177,14 +177,14 @@ class Stage {
     }
   }
 
-
+  
   /**
    * @param {string} url
    * @return {Promise}
    * @export
    */
   setUrl(url) {
-    let promise = new Promise((resolve, reject) => {
+      let promise = new Promise((resolve, reject) => {
       // mark the container as loading
       this.setLoading(true);
 
@@ -198,10 +198,17 @@ class Stage {
 
         // resolve the promise
         try {
-          resolve(this.iframe.contentDocument);
+          const doc = this.iframe.contentDocument;
+          if(doc) {
+            resolve(doc);
+          }
+          else {
+            console.warn('Could not acces the iframe content, probably due to a cross domain issue.');
+            resolve(null);
+          }
         }
         catch(e) {
-          console.error('Could not acces the iframe content, probably due to a cross domain issue.');
+          console.warn('Could not acces the iframe content, probably due to a cross domain issue.');
           resolve(null);
         }
       }

@@ -33,13 +33,13 @@ class App {
 
     /**
      * type {Wysiwyg}
-     *
+     */
     this.wysiwyg = new Wysiwyg();
 
 
     /**
      * type {Responsizer}
-     *
+     */
     this.responsizer = new Responsizer();
 
 
@@ -61,10 +61,10 @@ class App {
         window.location.href = '?url=' + escape(url);
       }
     };
-/*
+/* */
     this.toolbar.onClearFormatting = (element) => this.responsizer.clearFormatting(element, this.stage.getSize().width);
-    this.toolbar.onSave = () => this.fileService.save(
-			this.wysiwyg.getCleanHtml()).then(() => this.onSave());
+    // this.toolbar.onSave = () => this.fileService.save(
+		//	this.wysiwyg.getCleanHtml()).then(() => this.onSave());
     // selection
     this.wysiwyg.selectFilter = (element) => {return this.isBootstrapCol(element)};
     this.wysiwyg.onSelect = () => {
@@ -91,7 +91,7 @@ class App {
     // init
     this.wysiwyg.setSelectionMode(true);
     this.wysiwyg.setResizeMode(true);
-*/
+/* */
     this.toolbar.setDevice(Device.desktop);
  }
 
@@ -135,8 +135,11 @@ class App {
   onOpen(url) {
     this.url = url;
     this.stage.setUrl(url).then((doc) => {
-      //this.responsizer.importSilex(doc, this.stage.getSize().width);
-      //this.wysiwyg.setDocument(doc);
+      // check that we can access the document of the iframe
+      if(doc) {
+        this.responsizer.importSilex(doc, this.stage.getSize().width);
+        this.wysiwyg.setDocument(doc);
+      }
       this.toolbar.setSelection([]);
     }, (e) => {
       console.error('Error loading website:', e);
